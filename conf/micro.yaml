@@ -1,0 +1,6 @@
+nacos:
+  namespace: public
+  username: nacos
+  password: nacos
+  cluster-addr: 127.0.0.1:8848
+  servername: main_service
