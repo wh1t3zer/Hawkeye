@@ -1,4 +1,3 @@
-CREATE DATABASE Hawkeye;
 
 CREATE TABLE `Hawkeye_admin` (
   `id` bigint(20) NOT NULL COMMENT '自增id',
@@ -87,7 +86,7 @@ CREATE TABLE `Hawkeye_task` (
   primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务表';
 
-CREATE TABLE `Hawkeye_asset` ( /**/
+CREATE TABLE `Hawkeye_asset` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `task_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '任务id',
   `ip` varchar(255) NOT NULL DEFAULT '' COMMENT 'ip地址',
@@ -101,7 +100,7 @@ CREATE TABLE `Hawkeye_asset` ( /**/
   primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资产表';
 
-CREATE TABLE `Hawkeye_domain` ( /**/
+CREATE TABLE `Hawkeye_domain` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `asset_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '资产id',
   `domain` varchar(255) NOT NULL DEFAULT '' COMMENT '域名',
@@ -114,7 +113,7 @@ CREATE TABLE `Hawkeye_domain` ( /**/
   primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='域名表';
 
-CREATE TABLE `Hawkeye_portinfo` ( /**/
+CREATE TABLE `Hawkeye_portinfo` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `asset_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '资产id',
   `port` varchar(255) NOT NULL DEFAULT '' COMMENT '端口',
@@ -128,7 +127,7 @@ CREATE TABLE `Hawkeye_portinfo` ( /**/
   primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='服务表';
 
-CREATE TABLE `Hawkeye_webinfo` ( /**/
+CREATE TABLE `Hawkeye_webinfo` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `port_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '端口id',
   `start_url` varchar(255) NOT NULL DEFAULT '' COMMENT '起始URL',
@@ -143,7 +142,7 @@ CREATE TABLE `Hawkeye_webinfo` ( /**/
   primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Web信息表';
 
-CREATE TABLE `Hawkeye_vulinfo` ( /**/
+CREATE TABLE `Hawkeye_vulinfo` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `asset_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '资产id',
   `port_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '端口id',
@@ -165,7 +164,7 @@ CREATE TABLE `Hawkeye_vulinfo` ( /**/
   primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='漏洞表';
 
-CREATE TABLE `Hawkeye_trap` ( /**/
+CREATE TABLE `Hawkeye_trap` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `asset_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '资产id',
   `port_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '端口id',
@@ -181,7 +180,7 @@ CREATE TABLE `Hawkeye_trap` ( /**/
   primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='蜜罐识别表';
 
-CREATE TABLE `Hawkeye_auth` ( /**/
+CREATE TABLE `Hawkeye_auth` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `asset_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '资产id',
   `port_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '端口id',
@@ -193,7 +192,7 @@ CREATE TABLE `Hawkeye_auth` ( /**/
   primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='服务权限表';
 
-CREATE TABLE `task_rule` ( /**/
+CREATE TABLE `task_rule` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `trojan_cmd` varchar(255) NOT NULL DEFAULT '' COMMENT '木马注入payload的命令',
   `port_list` varchar(255) NOT NULL DEFAULT '' COMMENT '端口列表',

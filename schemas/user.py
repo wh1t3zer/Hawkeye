@@ -2,7 +2,7 @@ from datetime import date
 from pydantic import BaseModel
 
 
-class AdminSessionInfo(BaseModel):
+class User(BaseModel):
     id: int
     name: str
     login_time: date

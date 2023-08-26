@@ -1,6 +1,6 @@
 import time
 import nacos
-from util.file import read_config
+from utils.file import read_config
 import threading
 
 config = read_config('micro.yaml')
