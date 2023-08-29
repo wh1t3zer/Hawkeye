@@ -1,8 +1,6 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime
-
 from utils.database import Base
-from sqlalchemy.orm import Session
 
 
 class User(Base):
@@ -16,5 +14,5 @@ class User(Base):
     is_delete = Column(Integer, nullable=False)
 
 
-def get_user(db: Session, user: User):
-    return db.query(User).filter(User.user_name == user.user_name).first()
+
+

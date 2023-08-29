@@ -1,1 +1,2 @@
-port: 6379
+redis:
+  port: 6379

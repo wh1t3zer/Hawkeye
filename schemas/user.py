@@ -10,6 +10,7 @@ class User(BaseModel):
     introduction: str
     roles: list
 
+
 class ChangePwdInput(BaseModel):
     Password: str
 

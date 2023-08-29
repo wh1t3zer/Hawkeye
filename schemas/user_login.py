@@ -1,27 +1,30 @@
 from datetime import datetime
+
 from pydantic import BaseModel
 
-
-class UserSessionInfo(BaseModel):
-    id: int
-    user_name: str
-    login_time: datetime
 
 class UserLoginInput(BaseModel):
     user_name: str
     password: str
 
-    class Config:
-        orm_mode = True
 
-class UserLoginOut(BaseModel):
+class UserLoginInfo(BaseModel):
+    id: int
     user_name: str
+    is_delete: int
 
     class Config:
         orm_mode = True
 
 class UserLoginOutput(BaseModel):
     Token: str
+
+
+class UserSessionInfo():
+    def __init__(self, id, user_name, login_time):
+        self.id = id
+        self.user_name = user_name
+        self.login_time = login_time
 
 
 # def BindValidParam():

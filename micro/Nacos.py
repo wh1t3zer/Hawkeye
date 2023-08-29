@@ -4,8 +4,7 @@ from utils.file import read_config
 import threading
 
 config = read_config('micro.yaml')
-port = read_config('base.yaml')['port']
-
+port = read_config('base.yaml')['http']['port']
 
 # Nacos服务器地址
 HOST = str(config['nacos']['cluster-addr']).split(',')

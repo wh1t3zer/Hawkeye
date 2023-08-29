@@ -1,7 +1,10 @@
 from pydantic import BaseModel
 
+
 class AssetListOutput(BaseModel):
     total: int
+
+
 class AssetInfoOutput(BaseModel):
     id: int
     task_id: int
