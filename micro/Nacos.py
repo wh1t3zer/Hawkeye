@@ -1,7 +1,6 @@
 import time
 import nacos
 from utils.file import read_config
-import threading
 
 config = read_config('micro.yaml')
 port = read_config('base.yaml')['http']['port']

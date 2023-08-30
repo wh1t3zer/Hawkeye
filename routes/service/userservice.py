@@ -7,9 +7,6 @@ import utils.code
 from models.user import User
 
 
-
-
-
 app = FastAPI()
 
 
