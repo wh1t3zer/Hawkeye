@@ -8,7 +8,6 @@ import schemas.admin
 
 import utils
 from models.user import User
-from routes.service.adminservice import Find
 from schemas.admin import AdminInfoOutput
 from utils.Redis import redis_conn
 from utils.database import get_db
@@ -33,7 +32,7 @@ def admin_info():
     # pickle反序列化特殊性 b64
     admin_info = pickle.loads(base64.b64decode(tmp))
     # 判断是否为管理员
-    #print(userSessionInfo == admin_info)
+    print(userSessionInfo == admin_info)
     if (userSessionInfo == admin_info):
         info = AdminInfoOutput(
             id=admin_info['id'],
@@ -63,8 +62,7 @@ def change_pwd(admin: schemas.admin.ChangePwdInput, db: Session = Depends(get_db
     # 2.sessInfo.ID 读取数据库信息 adminInfo
     # 3.params.password + adminInfo.salt sha256 saltPassword
     # 4.saltPassword == > adminInfo.password 执行数据保存
-    #print(Find(db,"admin123"))
+    # print(Find(db,"admin123"))
 
-    #生成密码
+    # 生成密码
     saltPassword = utils.code.GenSaltPassword(admin.Password, "admin")
-

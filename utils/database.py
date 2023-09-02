@@ -8,10 +8,10 @@ config = read_config('mysql.yaml')
 PORT = config['mysql']['port']
 USERNAME = config['mysql']['username']
 PASSWORD = config['mysql']['password']
-DATABASE_URL = "mysql+pymysql://{}:{}@localhost:{}/Hawkeye?charset=utf8".format(USERNAME,PASSWORD,PORT)
+TABLE_NAME = config['mysql']['table_name']
+DATABASE_URL = "mysql+pymysql://{}:{}@localhost:{}/{}?charset=utf8".format(USERNAME, PASSWORD, PORT,TABLE_NAME)
 
 engine = create_engine(DATABASE_URL)
-
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()

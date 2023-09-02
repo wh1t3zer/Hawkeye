@@ -1,7 +1,9 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime
-from utils.database import Base
+from sqlalchemy.orm import Session
 
+from utils.database import Base
+import models
 
 class User(Base):
     __tablename__ = "hawkeye_admin"
@@ -12,6 +14,11 @@ class User(Base):
     create_at = Column(DateTime, default=datetime.now(), nullable=False)
     update_at = Column(DateTime, default=datetime.now(), nullable=False)
     is_delete = Column(Integer, nullable=False)
+
+
+def FindByName(user: User, db: Session):
+    return db.query(models.user.User).filter(User.user_name == user.user_name).first()
+
 
 
 

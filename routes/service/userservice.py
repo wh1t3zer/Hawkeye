@@ -7,7 +7,7 @@ from models.user import User
 
 
 def check_user(db: Session, user: User):
-    db_user = db.query(models.user.User).filter(models.user.User.user_name == user.user_name).first()
+    db_user = models.user.FindByName(user, db)
     if db_user is None:
         raise HTTPException(status_code=400, detail="用户信息不存在")
     else:
