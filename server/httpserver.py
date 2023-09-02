@@ -1,6 +1,7 @@
 import aioredis
 import uvicorn
 from fastapi import FastAPI
+from starlette.middleware.sessions import SessionMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from routes.user import router as user_router

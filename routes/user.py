@@ -13,7 +13,7 @@ from utils.database import get_db
 from utils.Redis import redis_conn
 
 app = FastAPI()
-router = APIRouter()
+router = APIRouter(prefix="/admin")
 app.add_middleware(SessionMiddleware, secret_key="secret")
 
 

@@ -1,15 +1,15 @@
 import pickle
 import base64
 from fastapi import APIRouter, Depends
-import datetime
 from sqlalchemy.orm import Session
 import routes.user
 import schemas.admin
 
 import utils
-from models.user import User
+from models.user import FindBySessionId, save
 from schemas.admin import AdminInfoOutput
 from utils.Redis import redis_conn
+from utils.code import GenSaltPassword
 from utils.database import get_db
 
 router = APIRouter(prefix='/admin')
@@ -62,7 +62,11 @@ def change_pwd(admin: schemas.admin.ChangePwdInput, db: Session = Depends(get_db
     # 2.sessInfo.ID 读取数据库信息 adminInfo
     # 3.params.password + adminInfo.salt sha256 saltPassword
     # 4.saltPassword == > adminInfo.password 执行数据保存
-    # print(Find(db,"admin123"))
+    sessInfo = pickle.loads(base64.b64decode(redis_conn.get(name=utils.const.AdminSessionInfoKey)))
+    adminInfo = FindBySessionId(sessInfo, db)
+    print(adminInfo.__dict__)
+    saltPassword = GenSaltPassword(admin.Password,adminInfo.salt)
+    flag_change = save(saltPassword, db)
 
     # 生成密码
-    saltPassword = utils.code.GenSaltPassword(admin.Password, "admin")
+    #saltPassword = utils.code.GenSaltPassword(admin.Password, "admin")

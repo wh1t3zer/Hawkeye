@@ -7,7 +7,6 @@ PORT = config['redis']['port']
 HOST = config['redis']['cluster-ip']
 PASSWORD = config['redis']['password']
 DB = config['redis']['database']
-print(PORT,HOST,PASSWORD,DB)
 redis_pool = redis.ConnectionPool(
     host=HOST,
     port=PORT,

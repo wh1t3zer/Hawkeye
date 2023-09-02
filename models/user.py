@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from utils.database import Base
 import models
 
+
 class User(Base):
     __tablename__ = "hawkeye_admin"
     id = Column(Integer, primary_key=True, index=True, nullable=False)
@@ -20,6 +21,13 @@ def FindByName(user: User, db: Session):
     return db.query(models.user.User).filter(User.user_name == user.user_name).first()
 
 
+def FindBySessionId(user: User, db: Session):
+    return db.query(models.user.User).filter(User.id == user['id']).first()
 
 
+def save(user: User, password: String, db: Session):
 
+    password = password
+    db.commit()
+    db.refresh(db_user)
+    return db_user
