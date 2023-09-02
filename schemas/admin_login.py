@@ -16,6 +16,7 @@ class UserLoginInfo(BaseModel):
     class Config:
         orm_mode = True
 
+
 class UserLoginOutput(BaseModel):
     Token: str
 
@@ -26,8 +27,4 @@ class UserSessionInfo():
         self.user_name = user_name
         self.login_time = login_time
 
-
 # def BindValidParam():
-
-
-

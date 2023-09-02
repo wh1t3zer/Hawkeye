@@ -1,13 +1,9 @@
-from fastapi import HTTPException, FastAPI
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from starlette.middleware.sessions import SessionMiddleware
-
 import models.user
 import utils.code
 from models.user import User
-
-
-app = FastAPI()
 
 
 def check_user(db: Session, user: User):
