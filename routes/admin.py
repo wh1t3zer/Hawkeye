@@ -1,12 +1,13 @@
+import datetime
+import json
 import pickle
 import base64
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
-import routes.user
 import schemas.admin
 
 import utils
-from models.user import FindBySessionId, save
+from models.user import FindBySessionId, update
 from schemas.admin import AdminInfoOutput
 from utils.Redis import redis_conn
 from utils.code import GenSaltPassword
@@ -25,15 +26,18 @@ router = APIRouter(prefix='/admin')
 # @Success 200 {object} middleware.Response{data=AdminInfoOutput} "success"
 # @Router /admin/admin_info [get]
 @router.get('/admin_info')
-def admin_info():
-    tmp = redis_conn.get(name=utils.const.AdminSessionInfoKey)
-    userSessionInfo = routes.user.user_info
-    print(schemas.admin_login.UserLoginInfo.__dict__)
-    # pickle反序列化特殊性 b64
-    admin_info = pickle.loads(base64.b64decode(tmp))
+def admin_info(request: Request):
+    #redis和session特性不同，字节类型错误
+    # tmp = redis_conn.get(name=utils.const.AdminSessionInfoKey)
+    # userSessionInfo = request.session.get('user')
+    # user_info = pickle.loads(base64.b64decode(tmp))
+    tmp = eval(base64.b64decode(redis_conn.get(name=utils.const.AdminSessionInfoKey).encode('utf-8')))
+    userSessionInfo =eval(base64.b64decode(request.session.get('user').encode('utf-8')))
     # 判断是否为管理员
-    print(userSessionInfo == admin_info)
-    if (userSessionInfo == admin_info):
+    if (tmp == userSessionInfo):
+        # pickle反序列化特殊性 b64
+        #admin_info = pickle.loads(base64.b64decode(tmp))
+        admin_info = userSessionInfo
         info = AdminInfoOutput(
             id=admin_info['id'],
             name=admin_info['user_name'],
@@ -60,13 +64,15 @@ def admin_info():
 def change_pwd(admin: schemas.admin.ChangePwdInput, db: Session = Depends(get_db)):
     # 1.session读取用户信息到结构体 sessInfo
     # 2.sessInfo.ID 读取数据库信息 adminInfo
-    # 3.params.password + adminInfo.salt sha256 saltPassword
+    # 3.sha256密码加盐 GenSaltPassword
     # 4.saltPassword == > adminInfo.password 执行数据保存
     sessInfo = pickle.loads(base64.b64decode(redis_conn.get(name=utils.const.AdminSessionInfoKey)))
     adminInfo = FindBySessionId(sessInfo, db)
-    print(adminInfo.__dict__)
-    saltPassword = GenSaltPassword(admin.Password,adminInfo.salt)
-    flag_change = save(saltPassword, db)
-
     # 生成密码
-    #saltPassword = utils.code.GenSaltPassword(admin.Password, "admin")
+    saltPassword = GenSaltPassword(admin.Password, adminInfo.salt)
+    flag_change = update(saltPassword, adminInfo, db)
+    if flag_change:
+        return "success"
+    else:
+        return "error"
+

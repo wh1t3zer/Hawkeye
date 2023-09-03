@@ -1,15 +1,10 @@
-#Oauth验证
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
-
 import models.user
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-#async def OauthRegister():
-
-#def Tokens():
 
 
+#Oauth验证
 #def AdminLoginOut():
     # AdminLoginOut godoc
     #@Summary 管理员退出

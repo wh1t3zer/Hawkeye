@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, update, table
 from sqlalchemy.orm import Session
 
 from utils.database import Base
@@ -18,16 +18,17 @@ class User(Base):
 
 
 def FindByName(user: User, db: Session):
-    return db.query(models.user.User).filter(User.user_name == user.user_name).first()
+    return db.query(User).filter(User.user_name == user.user_name).first()
 
 
 def FindBySessionId(user: User, db: Session):
-    return db.query(models.user.User).filter(User.id == user['id']).first()
+    return db.query(User).filter(User.id == user['id']).first()
 
 
-def save(user: User, password: String, db: Session):
-
-    password = password
+def update(password: String,user: User, db: Session):
+    db_user = db.query(User).filter(User.user_name == user['user_name']).first()
+    if db_user:
+        db_user.password = password
     db.commit()
     db.refresh(db_user)
     return db_user

@@ -16,7 +16,10 @@ PORT = config['http']['port']
 app.include_router(user_router)
 app.include_router(admin_router)
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=config['http']['allow_ip'])
-
+app.add_middleware(
+    SessionMiddleware,
+    secret_key="secret",
+)
 
 #注册到nacos
 #@app.on_event("startup")

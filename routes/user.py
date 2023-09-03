@@ -1,8 +1,9 @@
 import datetime
+import json
 import pickle
 import base64
-from fastapi import APIRouter, FastAPI
-from fastapi import Depends
+from fastapi import APIRouter, FastAPI, Depends
+from fastapi import Request
 from sqlalchemy.orm import Session
 from starlette.middleware.sessions import SessionMiddleware
 import utils.const
@@ -26,7 +27,7 @@ app.add_middleware(SessionMiddleware, secret_key="secret")
 # @Success 200 {object} middleware.Response{data=AdminLoginOutput} "success" 中间件待开发
 # @Router /login [post]
 @router.post('/login', response_model=schemas.admin_login.UserLoginInfo)
-async def login(user: schemas.admin_login.UserLoginInput, db: Session = Depends(get_db)):
+async def login(user: schemas.admin_login.UserLoginInput, request: Request, db: Session = Depends(get_db)):
     user_info = check_user(db, user)
     # 设置session
     if user_info is not None:
@@ -35,10 +36,15 @@ async def login(user: schemas.admin_login.UserLoginInput, db: Session = Depends(
             user_name=user_info.user_name,
             login_time=datetime.datetime.now()
         )
-        sess_info = pickle.dumps(sessInfo.__dict__)
-        key = utils.const.AdminSessionInfoKey
+
+        #sess_info = pickle.dumps(sessInfo.__dict__)
+        sess_info = base64.b64encode(str(vars(sessInfo)).encode('utf-8')).decode('utf-8')
+        # 写入session
+        request.session.update({"user": sess_info})
         # 将session存到redis,pickle与redis特殊性 b64
-        redis_conn.set(name=key, value=base64.b64encode(sess_info))
+        key = utils.const.AdminSessionInfoKey
+        redis_conn.set(name=key, value=sess_info)
+        # redis_conn.set(name=key, value=sess_info)
         redis_conn.save()
         Token = user_info.user_name
         return user_info
