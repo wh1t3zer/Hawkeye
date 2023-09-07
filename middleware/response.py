@@ -11,20 +11,31 @@
 #
 # GroupAllSaveFlowError = 2001
 #
-from json import dumps
+import traceback
+import trace
 
-from fastapi.responses import Response
+import contextvars
+import uuid
+from fastapi import FastAPI, Request
 
 
-class response(Response):
-    def __init__(self, content, msg, status,error=None):
-        if msg:
-            content['msg'] = msg
-        if error:
-            content['error'] = error
-        super().__init__(
-            content=dumps(content),
-            media_type="application/json",
-            status_code=status
-        )
+class ResponseCode:
+    pass
+
+class Response:
+    ErrorCode: ResponseCode
+    ErrorMsg: str
+    Data: str
+    TraceID: str
+    Stack: str
+
+
+request_id_context = contextvars.ContextVar('request-id')
+async def add_request_id_header(request: Request, call_next):
+    request_id = str(uuid.uuid4())
+    request_id_context.set(request_id)
+    response = await call_next(request)
+    response.headers["X-Request-Id"] = request_id
+    request_id_context.set(None)
+    return response
 

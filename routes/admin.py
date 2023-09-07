@@ -27,16 +27,16 @@ router = APIRouter(prefix='/admin')
 # @Router /admin/admin_info [get]
 @router.get('/admin_info')
 def admin_info(request: Request):
-    #redis和session特性不同，字节类型错误
+    # redis和session特性不同，字节类型错误
     # tmp = redis_conn.get(name=utils.const.AdminSessionInfoKey)
     # userSessionInfo = request.session.get('user')
     # user_info = pickle.loads(base64.b64decode(tmp))
     tmp = eval(base64.b64decode(redis_conn.get(name=utils.const.AdminSessionInfoKey).encode('utf-8')))
-    userSessionInfo =eval(base64.b64decode(request.session.get('user').encode('utf-8')))
+    userSessionInfo = eval(base64.b64decode(request.session.get('user').encode('utf-8')))
     # 判断是否为管理员
-    if (tmp == userSessionInfo):
+    if tmp == userSessionInfo:
         # pickle反序列化特殊性 b64
-        #admin_info = pickle.loads(base64.b64decode(tmp))
+        # admin_info = pickle.loads(base64.b64decode(tmp))
         admin_info = userSessionInfo
         info = AdminInfoOutput(
             id=admin_info['id'],
@@ -75,4 +75,3 @@ def change_pwd(admin: schemas.admin.ChangePwdInput, db: Session = Depends(get_db
         return "success"
     else:
         return "error"
-

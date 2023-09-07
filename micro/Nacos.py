@@ -31,6 +31,7 @@ def beat():
             #print('心跳一次')
         time.sleep(5)
 
-def init():
+def init_nacos():
+    print("service for nacos")
     register()
     beat()

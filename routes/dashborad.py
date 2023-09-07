@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, websockets
 
 app = FastAPI()
 router = APIRouter(prefix='/dashboard')
@@ -12,5 +12,5 @@ router = APIRouter(prefix='/dashboard')
 # @Success 200 {object} middleware.Response{data=DashboardOutput} "success"
 # @Router /dashboard/all [get]
 @router.get("/all")
-def index():
-    return 1
+def DefaultDashboard():
+    ws = websockets.WebSocket()

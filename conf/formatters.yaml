@@ -1,0 +1,4 @@
+formatters:
+    trace:
+        format: "%(asctime)s %(filename)s[line:%(lineno)d] [%(levelname)s] [%(traceid)s]: %(message)s"
+        datefmt: '%Y-%m-%d %H:%M:%S'

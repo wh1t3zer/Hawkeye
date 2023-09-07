@@ -1,4 +1,3 @@
-import aioredis
 import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
@@ -6,9 +5,9 @@ from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from routes.user import router as user_router
 from routes.admin import router as admin_router
-from utils.const import AdminSessionInfoKey
 from utils.file import read_config
-from micro.Nacos import init
+from micro.Nacos import init_nacos
+from utils.logs import logger
 
 app = FastAPI()
 config = read_config('base.yaml')
@@ -21,12 +20,19 @@ app.add_middleware(
     secret_key="secret",
 )
 
-#注册到nacos
-#@app.on_event("startup")
-# async def startup_nacos():
-#     print('register for nacos')
-#     init()
 
+# 注册到nacos
+@app.on_event("startup")
+def start_enevt():
+    # 挂载logger日志记录器、注册
+    app.state.logger = logger
+    # 启动nacos
+    # init_nacos()
+
+
+@app.on_event("shutdown")
+def shutdown_evnet():
+    app.state.logger.remove()
 
 
 def runserver():
