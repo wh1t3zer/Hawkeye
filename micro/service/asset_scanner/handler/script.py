@@ -1,5 +1,7 @@
 import re
 
+from micro.service.asset_scanner.modules.pynmap import NmapScanner
+
 
 class AssetScanner:
     """
@@ -22,7 +24,7 @@ class AssetScanner:
         self.exploit = exploit
         self.domain_dict = domain_dict
 
-    def _format_domain(self,domain):
+    def _format_domain(self, domain):
         # 正则匹配域名是否正确
         pattern = re.compile(
             r'^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|'
@@ -35,9 +37,8 @@ class AssetScanner:
         else:
             return False
 
-
-    def _format_ip(self,ip):
-        #判断输入是否正确IP
+    def _format_ip(self, ip):
+        # 判断输入是否正确IP
         pattern = re.compile(
             '^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$'
         )
@@ -45,7 +46,6 @@ class AssetScanner:
             return ip
         else:
             return False
-
 
     def _format_host(self):
         if not self.domain and not self.ip:
@@ -57,12 +57,12 @@ class AssetScanner:
             else:
                 return self.ip
 
-    #主机扫描,主程序
+    # 主机扫描,主程序
     def hostinfo_scan(self):
         """
         一、域名解析，查询，IP信息，子域名爆破
         二、主机信息、端口
         """
-        #使用nmap模块
+        # 使用nmap模块
         result = NmapScanner().get_detail(self.host, ports=self.scan_port)
-        
+
