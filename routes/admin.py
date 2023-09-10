@@ -9,7 +9,7 @@ import schemas.admin
 import utils
 from models.user import FindBySessionId, update
 from schemas.admin import AdminInfoOutput
-from utils.Redis import redis_conn
+from utils.redis import redis_conn
 from utils.code import GenSaltPassword
 from utils.database import get_db
 

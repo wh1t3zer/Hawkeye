@@ -26,7 +26,7 @@ app.add_middleware(
 def start_enevt():
     # 挂载logger日志记录器、注册
     app.state.logger = logger
-    # 启动nacos
+    # 注册主服务到nacos
     # init_nacos()
 
 

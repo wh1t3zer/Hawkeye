@@ -11,7 +11,7 @@ from middleware.response import add_request_id_header
 from routes.service.userservice import check_user
 import schemas.admin_login
 from utils.database import get_db
-from utils.Redis import redis_conn
+from utils.redis import redis_conn
 from utils.logs import logger
 
 app = FastAPI()

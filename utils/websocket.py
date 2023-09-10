@@ -1,22 +1,29 @@
-# import socket
-#
-#
-# # 建立socket链接
-# sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# # 防止linux/mac报错
-# sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-# # 服务器IP
-# sock.bind(('127.0.0.1', 8000))
-# conn, address = sock.accept()
-# data = conn.recv(1024)  # 获取客户端发送的消息
+import websocket
+import threading
 
-from fastapi import WebSocket, FastAPI
-from starlette.testclient import TestClient
+def on_message(ws,message):
+    print("接收消息:",message)
 
-app = FastAPI()
+def on_error(ws,error):
+    print("Error:",error)
 
-@app.websocket("/ws")
-def web(websocket: WebSocket):
-    print()
+def on_close(ws):
+    print("连接关闭")
 
+def on_open(ws):
+    print("连接打开")
+    #发送Websocket请求
+    send_data(ws)
+def send_data(ws):
+    #构造WebSocket请求数据
+    request_data ='dfdf'
+    ws.send(request_data)
 
+def run_websocket():
+    #创建Websocket连接
+    websocket.enableTrace(True)
+    ws = websocket.WebSocketApp("ws://124.222.224.186:8800/", on_message=on_message, on_close=on_close)
+    ws.on_open = on_open
+    ws.run_forever()
+
+run_websocket()

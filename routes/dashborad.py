@@ -11,6 +11,10 @@ router = APIRouter(prefix='/dashboard')
 # @Produce  json
 # @Success 200 {object} middleware.Response{data=DashboardOutput} "success"
 # @Router /dashboard/all [get]
-@router.get("/all")
+# @router.get("/all")
 def DefaultDashboard():
-    ws = websockets.WebSocket()
+    ws = websockets.WebSocket
+    print(ws)
+
+if __name__ == '__main__':
+    DefaultDashboard()
