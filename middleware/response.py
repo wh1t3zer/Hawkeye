@@ -1,41 +1,54 @@
-# from fastapi import FastAPI, Request
-# import trace
-# SuccessCode: int = 0
-# UndefErrorCode: int = 0
-# ValidErrorCode: int = 0
-# InternalErrorCode: int = 0
-#
-# #1000以下为通用码，1000以上为用户自定义码
-# InvalidRequestErrorCode = 401
-# CustomizeCode = 1000
-#
-# GroupAllSaveFlowError = 2001
-#
-import traceback
-import trace
+import pickle
 
-import contextvars
-import uuid
-from fastapi import FastAPI, Request
+import jsonmarshal
+from fastapi import Request
+from pydantic import BaseModel
 
 
-class ResponseCode:
-    pass
+class ResponseCode(BaseModel):
+    ErrorCode: int
 
-class Response:
-    ErrorCode: ResponseCode
+    # pass
+    class Config:
+        orm_mode = True
+
+
+class Response(BaseModel):
+    ErrorCode: int
     ErrorMsg: str
     Data: str
     TraceID: str
-    Stack: str
+
+    # Stack: str
+
+    class Config:
+        orm_mode = True
 
 
-request_id_context = contextvars.ContextVar('request-id')
-async def add_request_id_header(request: Request, call_next):
-    request_id = str(uuid.uuid4())
-    request_id_context.set(request_id)
-    response = await call_next(request)
-    response.headers["X-Request-Id"] = request_id
-    request_id_context.set(None)
-    return response
+SuccessCode: ResponseCode = 0
+UndefErrorCode: ResponseCode = 1
+ValidErrorCode: ResponseCode = 2
+InternalErrorCode: ResponseCode = 3
 
+# 1000以下为通用码，1000以上为用户自定义码
+InvalidRequestErrorCode: ResponseCode = 401
+CustomizeCode: ResponseCode = 1000
+GroupAllSaveFlowError: ResponseCode = 2001
+
+
+def ResponseError(request: Request, code: ResponseCode, err):
+    global TraceID
+    context = request.state.context
+    if context:
+        TraceID = context.request_id
+    resp = Response(ErrorCode=code, ErrorMsg=err, Data="", TraceID=TraceID)
+    request.state.__setattr__("response", resp)
+
+
+def ResponseSuccess(request: Request, data):
+    global TraceID
+    context = request.state.context
+    if context:
+        TraceID = context.request_id
+    resp = Response(ErrorCode=SuccessCode, Data=data, ErrorMsg="", TraceID=TraceID)
+    request.state.__setattr__("response", resp)

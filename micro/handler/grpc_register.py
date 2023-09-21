@@ -34,7 +34,7 @@ class GRPCServiceBase:
             print("Failed generate server port,info:", e)
             return False
 
-    def RegisterService(self,server_name, host, port, cluster_name):
+    def RegisterService(self, server_name, host, port, cluster_name):
         # 注册服务
         micro.Nacos.register(server_name=server_name, host=host, port=port, cluster_name=cluster_name)
 
@@ -42,7 +42,5 @@ class GRPCServiceBase:
         service = micro.Nacos.getName(server_name=server_name, host=host, port=port, cluster_name=cluster_name)
         if not service:
             return None
-        addr = "{}:{}".format(service['ip'],service['port'])
-        return addr,service
-
-
+        addr = "{}:{}".format(service['ip'], service['port'])
+        return addr, service

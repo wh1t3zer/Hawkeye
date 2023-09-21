@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+import "micro/proto/model/common.proto";
+
+service Victim{
+  rpc Communication (model.Request) returns (model.Response);
+}

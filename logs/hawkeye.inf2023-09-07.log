@@ -1,5 +1,0 @@
-2023-09-07 11:41:56 | INFO | aaaaaa%(asctime)s %(filename)s[line:%(lineno)d] [%(levelname)s] [%(traceid)s]: %(message)s
-2023-09-07 11:42:47 | INFO | aaaaaa
-2023-09-07 11:45:01 | INFO | aaaaaa
-2023-09-07 11:52:17 | INFO | aaaaaa
-2023-09-07 12:21:11 | INFO | abc

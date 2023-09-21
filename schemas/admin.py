@@ -10,6 +10,9 @@ class AdminInfoOutput(BaseModel):
     introduction: str
     roles: list
 
+    class Config:
+        orm_mode = True
+
 
 class ChangePwdInput(BaseModel):
     Password: str
